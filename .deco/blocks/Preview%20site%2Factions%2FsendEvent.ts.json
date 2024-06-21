@@ -1,0 +1,47 @@
+{
+  "__resolveType": "site/actions/sendEvent.ts",
+  "event": {
+    "entry_meta": {
+      "key": [
+        "source",
+        "medium"
+      ],
+      "value": [
+        "google",
+        "cpc"
+      ]
+    },
+    "hostname": "example.com",
+    "site_id": 123456,
+    "user_id": 789012,
+    "event_type": "pageview",
+    "session_id": 345678,
+    "start_time": "2024-06-20T12:34:56",
+    "duration": 120,
+    "is_bounce": false,
+    "entry_page": "/home",
+    "exit_page": "/contact",
+    "exit_page_hostname": "example.com",
+    "pageviews": 5,
+    "events": 3,
+    "sign": 1,
+    "utm_medium": "cpc",
+    "utm_source": "google",
+    "utm_campaign": "summer_sale",
+    "utm_content": "ad_1",
+    "utm_term": "summer shoes",
+    "referrer": "https://search.google.com",
+    "referrer_source": "google",
+    "country_code": "US",
+    "subdivision1_code": "CA",
+    "subdivision2_code": "LA",
+    "city_geoname_id": 5368361,
+    "screen_size": "1920x1080",
+    "operating_system": "Windows",
+    "operating_system_version": "10",
+    "browser": "Chrome",
+    "browser_version": "91.0.4472.124",
+    "timestamp": "2024-06-20T12:36:56",
+    "transferred_from": "example2.com"
+  }
+}
