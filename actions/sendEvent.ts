@@ -1,4 +1,6 @@
+import { allowCorsFor } from "deco/mod.ts";
 import { createClient } from "https://esm.sh/@clickhouse/client-web@1.2.0";
+import { AppContext } from "site/apps/site.ts";
 
 /**
  * Represents an event.
@@ -58,12 +60,17 @@ if (!CLICKHOUSE_ADDRESS || !CLICKHOUSE_PASSWORD) {
  * @param _req - The request object (unused in this function).
  * @returns A promise that resolves to an object with the status of the operation or an error message.
  */
-async function sendEvent({ event }: { event: Event }, _req: Request) {
+async function sendEvent({ event }: { event: Event }, req: Request, ctx: AppContext) {
+
+  Object.entries(allowCorsFor(req)).map(([name, value]) => {
+    ctx.response.headers.set(name, value);
+  });
+
   const table = "event_tracker";
   const client = createClient({
-    url: CLICKHOUSE_ADDRESS,
-    username: CLICKHOUSE_USERNAME,
-    password: CLICKHOUSE_PASSWORD,
+    url: ctx.clickhouseAddress,
+    username: ctx.clickhouseUsername,
+    password: ctx.clickhousePassword,
   });
 
   try {
