@@ -70,7 +70,7 @@ async function sendEvent({ event }: { event: Event }, req: Request, ctx: AppCont
   const client = createClient({
     url: ctx.clickhouseAddress,
     username: ctx.clickhouseUsername,
-    password: ctx.clickhousePassword,
+    password: ctx.clickhousePassword.get(),
   });
 
   try {
