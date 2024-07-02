@@ -73,10 +73,25 @@ async function sendEvent({ event }: { event: Event }, req: Request, ctx: AppCont
     password: ctx.clickhousePassword.get(),
   });
 
+  const completeEvent = {
+    ...event,
+    user_id: undefined,
+    session_id: undefined,
+    timestamp: undefined,
+    ip_city: req.headers.get("cf-ipcity"),
+    ip_continent: req.headers.get("cf-ipcontinent"),
+    ip_country: req.headers.get("cf-ipcountry"),
+    ip_region: req.headers.get("cf-region"),
+    ip_region_code: req.headers.get("cf-region-code"),
+    ip_timezone: req.headers.get("cf-timezone"),
+    ip_lat: req.headers.get("cf-iplatitude"),
+    ip_long: req.headers.get("cf-iplongitude"),
+  }
+
   try {
     await client.insert({
       table,
-      values: [event],
+      values: [completeEvent],
       format: "JSONEachRow",
       clickhouse_settings: {
         async_insert: 1,
