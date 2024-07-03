@@ -7,46 +7,45 @@ import { AppContext } from "site/apps/site.ts";
  */
 interface Event {
   hostname: string;
-  site_id: number;
-  user_id: number;
-  event_type: string;
-  session_id: number;
-  start_time: string; // DateTime type, represented as string in TypeScript
-  duration: number;
-  is_bounce: boolean;
-  entry_page: string;
-  exit_page: string;
-  exit_page_hostname: string;
-  pageviews: number;
-  events: number;
-  sign: number;
+  site_id: string | number;
+  site_name: string;
+  user_id?: string; // server side
+  session_id?: string; // server side
+  event_name: string;
+  start_time: string;
+  timestamp?: string; // server side
+  pathname: string;
+  navigation_from: string;
   entry_meta: {
     key: string[];
     value: string[];
   };
-  utm_medium: string;
-  utm_source: string;
-  utm_campaign: string;
-  utm_content: string;
-  utm_term: string;
+  utm_medium?: string;
+  utm_source?: string;
+  utm_campaign?: string;
+  utm_content?: string;
+  utm_term?: string;
   referrer: string;
-  referrer_source: string;
-  country_code: string; // LowCardinality(FixedString(2)), represented as string
-  subdivision1_code: string; // LowCardinality(String), represented as string
-  subdivision2_code: string; // LowCardinality(String), represented as string
-  city_geoname_id: number;
-  screen_size: string; // LowCardinality(String), represented as string
-  operating_system: string; // LowCardinality(String), represented as string
-  operating_system_version: string; // LowCardinality(String), represented as string
-  browser: string; // LowCardinality(String), represented as string
-  browser_version: string; // LowCardinality(String), represented as string
-  timestamp: string; // DateTime type, represented as string in TypeScript
-  transferred_from: string;
+  referrer_source?: string;
+  ip_city?: string; // server side
+  ip_continent?: string; // server side
+  ip_country?: string; // server side
+  ip_region?: string; // server side
+  ip_region_code?: string; // server side
+  ip_timezone?: string; // server side
+  ip_lat?: string; // server side
+  ip_long?: string; // server side
+  screen_size: string;
+  device: string;
+  operating_system: string;
+  operating_system_version: string;
+  browser: string;
+  browser_version: string;
 }
+
 
 const CLICKHOUSE_ADDRESS = Deno.env.get("CLICKHOUSE_ADDRESS");
 const CLICKHOUSE_PASSWORD = Deno.env.get("CLICKHOUSE_PASSWORD");
-const CLICKHOUSE_USERNAME = "default";
 
 if (!CLICKHOUSE_ADDRESS || !CLICKHOUSE_PASSWORD) {
   console.warn(
