@@ -43,13 +43,12 @@ interface Event {
   browser_version: string;
 }
 
-
 const CLICKHOUSE_ADDRESS = Deno.env.get("CLICKHOUSE_ADDRESS");
 const CLICKHOUSE_PASSWORD = Deno.env.get("CLICKHOUSE_PASSWORD");
 
 if (!CLICKHOUSE_ADDRESS || !CLICKHOUSE_PASSWORD) {
   console.warn(
-    "ClickHouse environment variables are not defined. ClickHouse functionality is now limited."
+    "ClickHouse environment variables are not defined. ClickHouse functionality is now limited.",
   );
 }
 
@@ -59,13 +58,16 @@ if (!CLICKHOUSE_ADDRESS || !CLICKHOUSE_PASSWORD) {
  * @param _req - The request object (unused in this function).
  * @returns A promise that resolves to an object with the status of the operation or an error message.
  */
-async function sendEvent({ event }: { event: Event }, req: Request, ctx: AppContext) {
-
+async function sendEvent(
+  { event }: { event: Event },
+  req: Request,
+  ctx: AppContext,
+) {
   Object.entries(allowCorsFor(req)).map(([name, value]) => {
     ctx.response.headers.set(name, value);
   });
 
-  const table = "event_tracker";
+  const table = "event_tracker_variant";
   const client = createClient({
     url: ctx.clickhouseAddress,
     username: ctx.clickhouseUsername,
@@ -74,6 +76,7 @@ async function sendEvent({ event }: { event: Event }, req: Request, ctx: AppCont
 
   const completeEvent = {
     ...event,
+    // TODO: pegar isso server side no apps
     timestamp: new Date().toISOString().slice(0, 19).replace("T", " "),
     ip_city: req.headers.get("cf-ipcity"),
     ip_continent: req.headers.get("cf-ipcontinent"),
@@ -83,7 +86,7 @@ async function sendEvent({ event }: { event: Event }, req: Request, ctx: AppCont
     ip_timezone: req.headers.get("cf-timezone"),
     ip_lat: req.headers.get("cf-iplatitude"),
     ip_long: req.headers.get("cf-iplongitude"),
-  }
+  };
 
   try {
     await client.insert({
