@@ -69,14 +69,12 @@ async function sendEvent({ event }: { event: Event }, req: Request, ctx: AppCont
   const client = createClient({
     url: ctx.clickhouseAddress,
     username: ctx.clickhouseUsername,
-    password: ctx.clickhousePassword.get(),
+    password: ctx.clickhousePassword.get()!,
   });
 
   const completeEvent = {
     ...event,
-    user_id: undefined,
-    session_id: undefined,
-    timestamp: undefined,
+    timestamp: new Date().toISOString().slice(0, 19).replace("T", " "),
     ip_city: req.headers.get("cf-ipcity"),
     ip_continent: req.headers.get("cf-ipcontinent"),
     ip_country: req.headers.get("cf-ipcountry"),
