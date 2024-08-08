@@ -74,11 +74,12 @@ async function sendEvent(
     password: ctx.clickhousePassword.get()!,
   });
 
+  event.session_id = undefined;
+
   const completeEvent = {
     ...event,
     // TODO: pegar isso server side no apps
     timestamp: new Date().toISOString().slice(0, 19).replace("T", " "),
-    session_id: undefined,
     ip_city: req.headers.get("cf-ipcity"),
     ip_continent: req.headers.get("cf-ipcontinent"),
     ip_country: req.headers.get("cf-ipcountry"),
